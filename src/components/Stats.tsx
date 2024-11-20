@@ -20,32 +20,32 @@ export function Stats({ activities }: StatsProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div className="bg-white rounded-lg shadow-md p-4">
-        <div className="flex items-center gap-2 text-blue-500 mb-2">
+      <div className="bg-gray-800 rounded-lg shadow-md p-4 border border-gray-700">
+        <div className="flex items-center gap-2 text-blue-400 mb-2">
           <Clock size={20} />
           <h3 className="font-semibold">Total Time Wasted</h3>
         </div>
-        <p className="text-2xl font-bold text-gray-800">
+        <p className="text-2xl font-bold text-gray-100">
           {totalHours}h {totalMinutes}m
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-4">
-        <div className="flex items-center gap-2 text-green-500 mb-2">
+      <div className="bg-gray-800 rounded-lg shadow-md p-4 border border-gray-700">
+        <div className="flex items-center gap-2 text-green-400 mb-2">
           <TrendingUp size={20} />
           <h3 className="font-semibold">Most Time-Wasting Activity</h3>
         </div>
-        <p className="text-2xl font-bold text-gray-800">
+        <p className="text-2xl font-bold text-gray-100">
           {topCategory ? topCategory[0] : 'No data'}
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-4">
-        <div className="flex items-center gap-2 text-yellow-500 mb-2">
+      <div className="bg-gray-800 rounded-lg shadow-md p-4 border border-gray-700">
+        <div className="flex items-center gap-2 text-yellow-400 mb-2">
           <AlertCircle size={20} />
           <h3 className="font-semibold">Activities Logged</h3>
         </div>
-        <p className="text-2xl font-bold text-gray-800">
+        <p className="text-2xl font-bold text-gray-100">
           {activities.length}
         </p>
       </div>

@@ -31,14 +31,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       <div className="max-w-4xl mx-auto p-6">
         <header className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Clock size={32} className="text-blue-500" />
-            <h1 className="text-3xl font-bold text-gray-800">Time Waster Tracker</h1>
+            <Clock size={32} className="text-blue-400" />
+            <h1 className="text-3xl font-bold text-white">Time Waster Tracker</h1>
           </div>
-          <p className="text-gray-600">Track and analyze your time-wasting activities</p>
+          <p className="text-gray-400">Track and analyze your time-wasting activities</p>
         </header>
 
         <Stats activities={activities} />
@@ -46,7 +46,7 @@ function App() {
 
         <div className="space-y-4">
           {activities.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-gray-400">
               No activities logged yet. Start tracking your time-wasting activities!
             </div>
           ) : (
