@@ -1,66 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { Activity } from './types';
-import { ActivityCard } from './components/ActivityCard';
-import { AddActivityForm } from './components/AddActivityForm';
-import { Stats } from './components/Stats';
-import { Clock } from 'lucide-react';
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { format } from 'date-fns';
+import Sidebar from './components/Sidebar';
 
-function App() {
-  const [activities, setActivities] = useState<Activity[]>(() => {
-    const saved = localStorage.getItem('timeWasterActivities');
-    return saved ? JSON.parse(saved) : [];
-  });
+interface Activity {
+  id: number;
+  duration: number;
+  timestamp: number;
+}
 
-  useEffect(() => {
-    localStorage.setItem('timeWasterActivities', JSON.stringify(activities));
-  }, [activities]);
+const App = () => {
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [duration, setDuration] = useState<number>(0);
 
-  const handleAddActivity = (name: string, category: string, duration: number) => {
-    const newActivity: Activity = {
-      id: crypto.randomUUID(),
-      name,
-      category,
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newActivity = {
+      id: Date.now(),
       duration,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     };
     setActivities(prev => [newActivity, ...prev]);
-  };
-
-  const handleDeleteActivity = (id: string) => {
-    setActivities(prev => prev.filter(activity => activity.id !== id));
+    setDuration(0);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <div className="max-w-4xl mx-auto p-6">
-        <header className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Clock size={32} className="text-blue-400" />
-            <h1 className="text-3xl font-bold text-white">Time Waster Tracker</h1>
-          </div>
-          <p className="text-gray-400">Track and analyze your time-wasting activities</p>
-        </header>
-
-        <Stats activities={activities} />
-        <AddActivityForm onAdd={handleAddActivity} />
-
-        <div className="space-y-4">
-          {activities.length === 0 ? (
-            <div className="text-center py-8 text-gray-400">
-              No activities logged yet. Start tracking your time-wasting activities!
-            </div>
-          ) : (
-            activities.map(activity => (
-              <ActivityCard
-                key={activity.id}
-                activity={activity}
-                onDelete={handleDeleteActivity}
-              />
-            ))
-          )}
+    <Router>
+      <div className="flex">
+        <Sidebar />
+        <div className="ml-64 p-6 flex-1">
+          <Routes>
+            <Route path="/" element={
+              <div>
+                <h1 className="text-2xl font-bold mb-4">Time Wasted Tracker</h1>
+                <form onSubmit={handleSubmit} className="mb-8">
+                  <div className="flex gap-4">
+                    <input
+                      type="number"
+                      value={duration}
+                      onChange={(e) => setDuration(Number(e.target.value))}
+                      placeholder="Minutes wasted"
+                      className="border p-2 rounded"
+                    />
+                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+                      Log Time
+                    </button>
+                  </div>
+                </form>
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">Recent Time Wasted</h2>
+                  <ul className="space-y-2">
+                    {activities.map((activity) => (
+                      <li key={activity.id} className="border p-4 rounded">
+                        <p>Minutes: {activity.duration}</p>
+                        <p className="text-gray-500">
+                          {format(activity.timestamp, 'MMM d, yyyy HH:mm')}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            } />
+            <Route path="/statistics" element={
+              <div>
+                <h1 className="text-2xl font-bold mb-4">Statistics</h1>
+                <p>Total time wasted: {activities.reduce((acc, curr) => acc + curr.duration, 0)} minutes</p>
+              </div>
+            } />
+          </Routes>
         </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
